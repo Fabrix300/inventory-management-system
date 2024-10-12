@@ -3,6 +3,8 @@ package com.reto.backend1.controller;
 import com.reto.backend1.model.Product;
 import com.reto.backend1.service.ProductService;
 
+import jakarta.validation.Valid;
+
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,12 +39,12 @@ public class ProductController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<Product> addProduct(@RequestBody Product product) {
+    public Mono<Product> addProduct(@Valid @RequestBody Product product) {
         return productService.saveProduct(product);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
+    public Mono<Product> updateProduct(@PathVariable Long id, @Valid @RequestBody Product product) {
         return productService.updateProduct(id, product);
     }
 

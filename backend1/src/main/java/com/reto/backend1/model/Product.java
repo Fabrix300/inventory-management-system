@@ -1,15 +1,22 @@
 package com.reto.backend1.model;
 
 import org.springframework.data.relational.core.mapping.Table;
-
 import org.springframework.data.annotation.Id;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Table("product")
 public class Product {
     @Id()
     private Long id;
+
+    @NotNull(message = "El nombre es obligatorio")
+    @NotBlank(message = "El nombre no puede estar vacío")
     private String name;
+
     private double price;
+
     private int quantity;
 
     public Product() {
