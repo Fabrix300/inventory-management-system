@@ -1,7 +1,13 @@
 package com.reto.backend1.model;
 
+import org.springframework.data.relational.core.mapping.Table;
+
+import org.springframework.data.annotation.Id;
+
+@Table("product")
 public class Product {
-    private String id;
+    @Id()
+    private Long id;
     private String name;
     private double price;
     private int quantity;
@@ -9,18 +15,18 @@ public class Product {
     public Product() {
     }
 
-    public Product(String id, String name, double price, int quantity) {
+    public Product(Long id, String name, double price, int quantity) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

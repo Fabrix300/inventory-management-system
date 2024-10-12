@@ -1,15 +1,8 @@
 package com.reto.backend1.repository;
 
 import com.reto.backend1.model.Product;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
-public interface ProductRepository {
-    Flux<Product> findAll();
+import org.springframework.data.r2dbc.repository.R2dbcRepository;
 
-    Mono<Product> findById(String id);
-
-    Mono<Product> save(Product product);
-
-    Mono<Void> deleteById(String id);
+public interface ProductRepository extends R2dbcRepository<Product, Long> {
 }
