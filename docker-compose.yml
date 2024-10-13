@@ -1,35 +1,58 @@
 services:
-  kafka:
-    image: wurstmeister/kafka:latest
-    ports:
-      - "9092:9092"
-    environment:
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-      KAFKA_ZOOKEEPER: zookeeper:2181
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
-
   zookeeper:
     image: wurstmeister/zookeeper:latest
     ports:
       - "2181:2181"
 
+  kafka:
+    image: wurstmeister/kafka:latest
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_ZOOKEEPER: zookeeper:2181
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    depends_on:
+      - zookeeper
+  
   backend1:
     build:
-      context: ./backend-1-products
+      context: ./backend1
       dockerfile: Dockerfile
     ports:
-      - "8081:8080"
+      - "8081:8081"
     depends_on:
-    - kafka
+      - kafka
+      - zookeeper
 
   backend2:
     build:
-      context: ./backend-2-notifications
+      context: ./backend2
       dockerfile: Dockerfile
     ports:
-      - "8082:8080"
+      - "8082:8082"
     depends_on:
       - kafka
+      - zookeeper
+
+  api-gateway:
+    build:
+      context: ./apiGateway
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend1
+      - backend2
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    depends_on:
+      - api-gateway

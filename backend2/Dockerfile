@@ -11,8 +11,8 @@ FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
-COPY --from=build /app/target/backend1-0.0.1-SNAPSHOT.jar /app/backend1.jar
+COPY --from=build /app/target/backend2-0.0.1-SNAPSHOT.jar /app/backend2.jar
 
-EXPOSE 8081
+EXPOSE 8082
 
-ENTRYPOINT ["java", "-jar", "/app/backend1.jar"]
+ENTRYPOINT ["java", "-jar", "/app/backend2.jar"]
