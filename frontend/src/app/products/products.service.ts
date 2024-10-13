@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product } from './models/product';
 
@@ -7,7 +7,7 @@ import { Product } from './models/product';
   providedIn: 'root',
 })
 export class ProductsService {
-  private apiBaseUrl = 'http://localhost/api/products';
+  private apiBaseUrl = 'http://localhost:8080/products';
 
   constructor(private http: HttpClient) {}
 
@@ -20,7 +20,11 @@ export class ProductsService {
   }
 
   createProduct(product: Product): Observable<Product> {
-    return this.http.post<Product>(this.apiBaseUrl, product);
+    return this.http.post<Product>(this.apiBaseUrl, product, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    });
   }
 
   updateProduct(id: string, product: Product): Observable<Product> {

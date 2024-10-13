@@ -1,18 +1,26 @@
 package com.reto.backend2.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.reactive.config.CorsRegistry;
-// import org.springframework.web.reactive.config.EnableWebFlux;
-import org.springframework.web.reactive.config.WebFluxConfigurer;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 @Configuration
-public class CorsConfig implements WebFluxConfigurer {
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**") // Permite todas las rutas
-                .allowedOrigins("http://localhost:4200") // Permite todas las orígenes
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Métodos permitidos
-                .allowedHeaders("Content-Type", "Authorization", "Accept", "Origin") // Todos los headers
-                .allowCredentials(true); // Permite credenciales
+public class CorsConfig {
+
+    @Bean
+    public CorsWebFilter corsWebFilter() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(false);
+        config.addAllowedOrigin("http://localhost:4200"); // Permitir el origen de tu frontend
+        config.addAllowedHeader("*"); // Permitir todos los headers
+        config.addAllowedMethod("*"); // Permitir todos los métodos (GET, POST, etc.)
+
+        // Mapea el endpoint WebSocket
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+
+        return new CorsWebFilter(source);
     }
 }

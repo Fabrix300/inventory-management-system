@@ -52,7 +52,8 @@ export class ProductFormComponent {
     } else {
       this.productsService
         .createProduct(this.productForm.value)
-        .subscribe(() => {
+        .subscribe((value) => {
+          console.log(value);
           this.router.navigate(['']);
         });
     }

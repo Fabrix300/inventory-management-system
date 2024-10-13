@@ -14,6 +14,9 @@ public class ApiGatewayConfig {
 						.uri("http://backend1:8081"))
 				.route("backend2", r -> r.path("/notifications/**")
 						.uri("http://backend2:8082"))
+				.route("socket", r -> r.path("/ws/**")
+						.filters(f -> f.setRequestHeader("Sec-WebSocket-Protocol", ""))
+						.uri("ws://backend2:8082"))
 				.build();
 	}
 }
